@@ -50,8 +50,10 @@ public class ListaAtoresActivity extends AppCompatActivity {
         recyclerViewAtores.setHasFixedSize(true);
         recyclerViewAtores.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
 
-        popularLista();
+        atores = atorDAO.getAll();
+        atorAdapter = new AtorAdapter(atores);
 
+        recyclerViewAtores.setAdapter(atorAdapter);
         recyclerViewAtores.addOnItemTouchListener(
             new RecyclerItemClickListener(getApplicationContext(),recyclerViewAtores, new RecyclerItemClickListener.OnItemClickListener(){
 
@@ -69,12 +71,6 @@ public class ListaAtoresActivity extends AppCompatActivity {
 
         adicionarNovoAtor = findViewById(R.id.buttonAdicionaAtor);
 
-    }
-
-    private void popularLista() {
-        atores = atorDAO.getAll();
-        atorAdapter = new AtorAdapter(atores);
-        recyclerViewAtores.setAdapter(atorAdapter);
     }
 
     public void AdicionaAtor(View view){

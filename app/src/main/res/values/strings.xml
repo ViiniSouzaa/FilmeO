@@ -3,14 +3,14 @@
     <string name="adicionar_Filme">Adicionar Filme</string>
     <string name="label_adicionar_filme">"FilmeO - Adicionar Filme"</string>
     <string name="insira_nome_do_filme">"INSIRA O NOME DO FILME"</string>
-    <string name="adicioneAtores" >INSIRIR OS ATORES</string>
+    <string name="adicioneAtores">INSIRIR OS ATORES</string>
     <string name="insiraDescricao">"DIGITE UMA DESCRICAO PARA O FILME"</string>
-    <string name="adicionarDiretor" >INSIRIR O DIRETOR</string>
+    <string name="adicionarDiretor">INSIRIR O DIRETOR</string>
     <string name="insiraData">INSIRA A DATA QUE O FILME FOI ASSISTIDO</string>
     <string name="diretor">DIRETOR</string>
     <string name="adicionar_novo_ator">ADICIONAR NOVO ATOR</string>
     <string name="adicionarNovoDiretor">ADICIONAR NOVO DIRETOR</string>
-    <string name="insira_nome_ator" >INSIRA O NOME DO ATOR</string>
+    <string name="insira_nome_ator">INSIRA O NOME DO ATOR</string>
     <string name="insira_nome_diretor">INSIRA O NOME DO DIRETOR</string>
     <string name="nome">NOME</string>
     <string name="adicionar">ADICIONAR</string>
@@ -19,5 +19,10 @@
     <string name="ator1">ATOR 1</string>
     <string name="ator2">ATOR 2</string>
     <string name="ator3">ATOR 3</string>
+    <string name="filme_assistido">ASSISTIDO</string>
+    <string name="filme_nao_assistido">NÃO ASSISTIDO</string>
+    <string name="title_activity_filmes_assistidos">FilmesAssistidos</string>
+    <string name="title_activity_filmes_nao_assistidos">FilmesNaoAssistidos</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

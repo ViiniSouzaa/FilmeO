@@ -67,9 +67,14 @@ public class FilmeDAO {
         connection.delete("filme", "_id = ?", args);
     }
 
-    public List<Filme> getAll(){
+    public List<Filme> getAllAssistidos(Boolean order){
         list =  new ArrayList<>();
-        String sql = " SELECT * FROM filme ";
+        String sql;
+        if (order){
+            sql = "SELECT * FROM filme WHERE assistido ORDER BY nome ASC ";
+        }else {
+            sql = "SELECT * FROM filme WHERE assistido ORDER BY nome DESC";
+        }
 
         Cursor cursor = connection.rawQuery(sql,null);
 
@@ -81,7 +86,8 @@ public class FilmeDAO {
                 filme.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
                 filme.setAtores(atoresFilme(filme.getId()));
                 filme.setDiretor(getDiretor(cursor.getInt(cursor.getColumnIndex("id_diretor"))));
-                filme.setAssistido(getAssistido(cursor.getInt(cursor.getColumnIndex("assistido"))));
+                filme.setAssistido(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex("assistido"))));
+                list.add(filme);
             }while (cursor.moveToNext());
             cursor.close();
             return list;
@@ -90,32 +96,94 @@ public class FilmeDAO {
         return null;
     }
 
-    private boolean getAssistido(int value) {
-        if(value == 1)
-            return true;
-        return false;
-    }
-
-    public Filme getById(int id){
-        String sql = " SELECT * FROM filme ";
+    public List<Filme> getAllNaoAssistidos(Boolean order){
+        list =  new ArrayList<>();
+        String sql;
+        if (order){
+            sql = " SELECT * FROM filme WHERE NOT assistido ORDER BY nome ASC";
+        }else{
+            sql = " SELECT * FROM filme WHERE NOT assistido ORDER BY nome DESC";
+        }
 
         Cursor cursor = connection.rawQuery(sql,null);
 
         if(cursor.moveToFirst()){
+            do {
                 Filme filme =  new Filme();
                 filme.setId(cursor.getInt(cursor.getColumnIndex("_id")));
                 filme.setNome(cursor.getString(cursor.getColumnIndex("nome")));
                 filme.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
                 filme.setAtores(atoresFilme(filme.getId()));
                 filme.setDiretor(getDiretor(cursor.getInt(cursor.getColumnIndex("id_diretor"))));
-
-                cursor.close();
-            return filme;
+                filme.setAssistido(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex("assistido"))));
+                list.add(filme);
+            }while (cursor.moveToNext());
+            cursor.close();
+            return list;
         }
         cursor.close();
         return null;
     }
 
+    public List<Filme> getByNomeAssistido(String nome, Boolean order){
+        list = new ArrayList<>();
+
+        String sql;
+        if (order){
+            sql = "SELECT * FROM filme WHERE  assistido AND nome LIKE '%" + nome + "%' ORDER BY nome ASC";
+        }else{
+            sql = "SELECT * FROM filme WHERE  assistido AND nome LIKE '%" + nome  + "%' ORDER BY nome DESC";
+        }
+
+        Cursor cursor = connection.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do {
+                Filme filme =  new Filme();
+                filme.setId(cursor.getInt(cursor.getColumnIndex("_id")));
+                filme.setNome(cursor.getString(cursor.getColumnIndex("nome")));
+                filme.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
+                filme.setAtores(atoresFilme(filme.getId()));
+                filme.setDiretor(getDiretor(cursor.getInt(cursor.getColumnIndex("id_diretor"))));
+                filme.setAssistido(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex("assistido"))));
+                list.add(filme);
+            }while (cursor.moveToNext());
+            cursor.close();
+            return list;
+        }
+        cursor.close();
+        return null;
+    }
+
+    public List<Filme> getByNomeNaoAssistido(String nome, Boolean order){
+        list = new ArrayList<>();
+
+        String sql;
+        if (order){
+            sql = "SELECT * FROM filme WHERE  NOT assistido AND nome LIKE '%" + nome + "%' ORDER BY nome ASC";
+        }else{
+            sql = "SELECT * FROM filme WHERE  NOT assistido AND nome LIKE '%" + nome  + "%' ORDER BY nome DESC";
+        }
+
+        Cursor cursor = connection.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do {
+                Filme filme =  new Filme();
+                filme.setId(cursor.getInt(cursor.getColumnIndex("_id")));
+                filme.setNome(cursor.getString(cursor.getColumnIndex("nome")));
+                filme.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
+                filme.setAtores(atoresFilme(filme.getId()));
+                filme.setDiretor(getDiretor(cursor.getInt(cursor.getColumnIndex("id_diretor"))));
+                filme.setAssistido(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex("assistido"))));
+                list.add(filme);
+            }while (cursor.moveToNext());
+            cursor.close();
+            return list;
+        }
+        cursor.close();
+        return null;
+    }
 
     public Filme getLastFilme(){
         String sql = "SELECT * FROM filme WHERE _id = max(id)";
