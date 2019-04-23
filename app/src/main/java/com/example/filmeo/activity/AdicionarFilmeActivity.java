@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.filmeo.R;
 import com.example.filmeo.database.AtorDAO;
@@ -43,6 +44,7 @@ public class AdicionarFilmeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_adicionar_filme);
+
         nomeFilme = findViewById(R.id.edittext_nome_filme);
         descricaoFilme = findViewById(R.id.editTextDescricao);
         inserirAtores = findViewById(R.id.buttonInsiraAtores);
@@ -54,10 +56,36 @@ public class AdicionarFilmeActivity extends AppCompatActivity {
         ator1 = findViewById(R.id.textViewAtor1);
         ator2 = findViewById(R.id.textViewAtor2);
         ator3 = findViewById(R.id.textViewAtor3);
-        atores_id = new int[3];
         intent = getIntent();
+        diretor = -1;
+        iniciaAtores();
+        recuperaDados();
         populaAtores();
         populaDiretor();
+    }
+     public void iniciaAtores(){
+        atores_id = new int[3];
+        for (int i = 0; i < 3; i++){
+            atores_id[i] = -1;
+        }
+     }
+
+    private void recuperaDados(){
+        nomeFilme.setText(intent.getStringExtra("nome"));
+        descricaoFilme.setText(intent.getStringExtra("descricao"));
+        trocaVetor(intent.getIntArrayExtra("atores"));
+        diretor = intent.getIntExtra("diretor", -1);
+        assistido.setSelected(intent.getBooleanExtra("assistido", false));
+    }
+
+    public void trocaVetor(int[] atores_recuperados){
+        if(atores_recuperados != null) {
+            for (int i = 0; i < 3; i++) {
+                if (atores_recuperados[i] != -1) {
+                    atores_id[i] = atores_recuperados[i];
+                }
+            }
+        }
     }
 
 
@@ -81,29 +109,19 @@ public class AdicionarFilmeActivity extends AppCompatActivity {
             startActivity(intent);
     }
 
-    public void adicionarNovoFilme(View view){
-        db = new DBHelper(this);
-        connection = db.getWritableDatabase();
-        filmeDAO = new FilmeDAO(connection);
-            Filme filme = new Filme();
-            filme.setNome(String.valueOf(nomeFilme.getText()));
-            filme.setDescricao(String.valueOf(descricaoFilme.getText()));
-            filme.setAtores(getAtoresFilme());
-            filme.setDiretor(getDiretorFilme());
-            filme.setAssistido(assistido.isSelected());
-            filmeDAO.insert(filme);
-    }
-
     private List<Ator> getAtoresFilme() {
         List<Ator> lista = new ArrayList<>();
-        atores_id = intent.getIntArrayExtra("atores");
-
         db = new DBHelper(this);
         connection = db.getReadableDatabase();
+        Ator atorVazio = null;
         AtorDAO atorDAO = new AtorDAO(connection);
             for(int i=0;i<3;i++) {
                 if(atores_id[i] != -1)
                     lista.add(atorDAO.getById(atores_id[i]));
+                else
+                    atorVazio = new Ator();
+                    atorVazio.setId(-1);
+                    lista.add(atorVazio);
             }
             if (lista.size() > 0)
                 return lista;
@@ -111,30 +129,60 @@ public class AdicionarFilmeActivity extends AppCompatActivity {
     }
 
     private Diretor getDiretorFilme() {
-        diretor = intent.getIntExtra("diretor", 0);
         db = new DBHelper(this);
         connection = db.getReadableDatabase();
         DiretorDAO diretorDAO = new DiretorDAO(connection);
         if(diretor != -1)
             return diretorDAO.getById(diretor);
-        return null;
+        return new Diretor();
     }
 
     public void populaAtores(){
-        atores_id = intent.getIntArrayExtra("atores");
-        db = new DBHelper(this);
-        connection = db.getReadableDatabase();
-        AtorDAO atorDAO = new AtorDAO(connection);
-            ator1.setText(atorDAO.getById(atores_id[0]).getNome());
-            ator2.setText(atorDAO.getById(atores_id[1]).getNome());
-            ator3.setText(atorDAO.getById(atores_id[2]).getNome());
+        if(intent.getIntArrayExtra("atores") != null) {
+            atores_id = intent.getIntArrayExtra("atores");
+            db = new DBHelper(this);
+            connection = db.getReadableDatabase();
+            AtorDAO atorDAO = new AtorDAO(connection);
+            if (atores_id[0] != -1)
+                ator1.setText(atorDAO.getById(atores_id[0]).getNome());
+            if (atores_id[1] != -1)
+                ator2.setText(atorDAO.getById(atores_id[1]).getNome());
+            if (atores_id[2] != -1)
+                ator3.setText(atorDAO.getById(atores_id[2]).getNome());
+        }
     }
 
     public void populaDiretor(){
-        diretor = intent.getIntExtra("diretor", 0);
+        diretor = intent.getIntExtra("diretor", -1);
         db = new DBHelper(this);
         connection = db.getReadableDatabase();
         DiretorDAO diretorDAO = new DiretorDAO(connection);
-            textViewDiretor.setText(diretorDAO.getById(diretor).getNome());
+            if(diretor != -1)
+                textViewDiretor.setText(diretorDAO.getById(diretor).getNome());
+    }
+
+    public boolean validaCampos(){
+        if(String.valueOf(nomeFilme.getText()).equals("")){
+            return false;
+        }
+        return true;
+    }
+
+    public void adicionarNovoFilme(View view){
+        if(validaCampos()) {
+            db = new DBHelper(this);
+            connection = db.getWritableDatabase();
+            filmeDAO = new FilmeDAO(connection);
+            Filme filme = new Filme();
+            filme.setNome(String.valueOf(nomeFilme.getText()));
+            filme.setDescricao(String.valueOf(descricaoFilme.getText()));
+            filme.setAtores(getAtoresFilme());
+            filme.setDiretor(getDiretorFilme());
+            filme.setAssistido(assistido.isSelected());
+            filmeDAO.insert(filme);
+            finish();
+        }else{
+            Toast.makeText(this, "INSIRA AO MENOS O NOME DO FILME", Toast.LENGTH_LONG).show();
+        }
     }
 }

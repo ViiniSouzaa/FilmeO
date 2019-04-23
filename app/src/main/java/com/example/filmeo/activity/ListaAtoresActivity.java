@@ -1,5 +1,6 @@
 package com.example.filmeo.activity;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +32,11 @@ public class ListaAtoresActivity extends AppCompatActivity {
     private SQLiteDatabase connection;
     private AtorDAO atorDAO;
     private DBHelper db;
-
+    private String nomeFilme, descricaoFilme;
+    private int diretor;
+    private int[] atores_id;
+    private boolean assistido;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,9 @@ public class ListaAtoresActivity extends AppCompatActivity {
         db = new DBHelper(this);
         connection = db.getWritableDatabase();
         atorDAO = new AtorDAO(connection);
+        intent = getIntent();
+        iniciaAtores();
+        recuperaDados();
 
         recyclerViewAtores = findViewById(R.id.recycleViewAtores);
 
@@ -75,8 +83,45 @@ public class ListaAtoresActivity extends AppCompatActivity {
 
     public void AdicionaAtor(View view){
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.FrameLayoutAdicionarAtores, new AdicionarAtorActivity()).commit();
+                .replace(R.id.FrameLayoutAdicionarAtores, new AdicionarAtorActivity(createSaved())).commit();
     }
+
+    private void recuperaDados(){
+        nomeFilme = intent.getStringExtra("nome");
+        descricaoFilme = intent.getStringExtra("descricao");
+        trocaVetor(intent.getIntArrayExtra("atores"));
+        diretor = intent.getIntExtra("diretor", -1);
+        assistido = intent.getBooleanExtra("assistido", false);
+    }
+
+    public void trocaVetor(int[] atores_recuperados){
+        if(atores_recuperados != null) {
+            for (int i = 0; i < 3; i++) {
+                if (atores_recuperados[i] != -1) {
+                    atores_id[i] = atores_recuperados[i];
+                }
+            }
+        }
+    }
+
+    public void iniciaAtores(){
+        atores_id = new int[3];
+        for (int i = 0; i < 3; i++){
+            atores_id[i] = -1;
+        }
+    }
+
+    public Bundle createSaved(){
+        Bundle bundle = new Bundle();
+        bundle.putString("nomeFilme", nomeFilme);
+        bundle.putString("descricaoFilme", descricaoFilme);
+        bundle.putIntArray("atores", atores_id);
+        bundle.putInt("diretor", diretor);
+        bundle.putBoolean("assistido", assistido);
+
+        return bundle;
+    }
+
 
 
 }

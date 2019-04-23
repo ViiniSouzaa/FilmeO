@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -23,9 +24,10 @@ import com.example.filmeo.model.Filme;
 import com.example.filmeo.recycleAdapter.FilmeAdapter;
 import com.example.filmeo.utils.RecyclerItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class FilmesAssistidosActivity extends Fragment {
+public class ListaFilmesAssistidosActivity extends Fragment {
 
     DBHelper db;
     SQLiteDatabase connection;
@@ -53,12 +55,37 @@ public class FilmesAssistidosActivity extends Fragment {
         recyclerViewFilmes = view.findViewById(R.id.recycleViewFilmes);
         layoutManager = new LinearLayoutManager(view.getContext());
         order = true;
+        filmes = new ArrayList<>();
+
+        spinnerOrderBy.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String ordem = parent.getItemAtPosition(position).toString();
+                        if(order.equals(R.string.az)){
+                            order = true;
+                        }else
+                        if(order.equals(R.string.za)){
+                            order = false;
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                }
+        );
 
         recyclerViewFilmes.setLayoutManager(layoutManager);
         recyclerViewFilmes.setHasFixedSize(true);
         recyclerViewFilmes.addItemDecoration(new DividerItemDecoration(view.getContext(), LinearLayout.VERTICAL));
 
         filmes = filmeDAO.getAllAssistidos(order);
+        if(filmes == null){
+            System.out.println("LISTA NULA");
+            filmes = new ArrayList<>();
+        }
         filmeAdapter = new FilmeAdapter(filmes);
 
         recyclerViewFilmes.setAdapter(filmeAdapter);

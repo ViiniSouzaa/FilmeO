@@ -26,7 +26,8 @@ public class FilmeAdapter extends RecyclerView.Adapter<FilmeAdapter.MyViewHolder
     }
 
     public FilmeAdapter(List<Filme> lista) {
-        this.lista = lista;
+            System.out.println("LISTA NULA");
+            this.lista = lista;
     }
 
     @NonNull

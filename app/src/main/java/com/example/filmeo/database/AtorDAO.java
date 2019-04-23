@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.filmeo.model.Ator;
+import com.example.filmeo.model.Filme;
 
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
@@ -73,6 +74,24 @@ public class AtorDAO {
                 Ator ator = new Ator();
                 ator.setId(cursor.getInt(cursor.getColumnIndex("_id")));
                 ator.setNome(cursor.getString(cursor.getColumnIndex("nome")));
+            cursor.close();
+            return ator;
+        }
+        cursor.close();
+        return null;
+    }
+
+    public Ator getLastAtor(){
+        String sql = "SELECT * FROM ator WHERE _id = (SELECT max(_id) FROM filme)";
+
+        Cursor cursor = connection.rawQuery(sql,null);
+
+        Ator ator;
+
+        if(cursor.moveToFirst()){
+            ator = new Ator();
+            ator.setId(cursor.getInt(cursor.getColumnIndex("_id")));
+            ator.setNome(cursor.getString(cursor.getColumnIndex("nome")));
             cursor.close();
             return ator;
         }

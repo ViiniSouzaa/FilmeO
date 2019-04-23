@@ -2,6 +2,7 @@ package com.example.filmeo.database;
 
 import android.bluetooth.le.ScanRecord;
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -11,14 +12,31 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, "nome_banco", null, versao_banco);
+        super(context, nome_banco, null, versao_banco);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(ScriptDLL.getCreateTableAtor());
-        db.execSQL(ScriptDLL.getCreateTableDiretor());
-        db.execSQL(ScriptDLL.getCreateTableFilme());
+        try {
+            db.execSQL(ScriptDLL.getCreateTableAtor());
+        }catch (SQLException ex){
+            System.out.println("Erro aqui ator");
+        }
+        try {
+            db.execSQL(ScriptDLL.getCreateTableDiretor());
+        }catch (SQLException ex){
+            System.out.println("Erro aqui diretor");
+        }
+        try {
+            db.execSQL(ScriptDLL.getCreateTableFilme());
+        }catch (SQLException ex){
+            System.out.println("Erro aqui filme");
+        }
+        try {
+            db.execSQL(ScriptDLL.getCreateConectionTablesFilmeAtor());
+        }catch (SQLException ex){
+            System.out.println("Erro aqui filme_ator");
+        }
         db.execSQL(ScriptDLL.getCreateConectionTablesFilmeAtor());
     }
 

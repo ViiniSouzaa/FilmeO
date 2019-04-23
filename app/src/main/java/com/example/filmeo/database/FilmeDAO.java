@@ -28,11 +28,12 @@ public class FilmeDAO {
 
         connection.insertOrThrow("filme", null, contentValues);
         for (Ator ator : filme.getAtores()){
-            ContentValues contentValuesAtor = new ContentValues();
-            contentValuesAtor.put("id_filme", getLastFilme().getId());
-            contentValuesAtor.put("id_ator", ator.getId());
-
-            connection.insertOrThrow("filme_atores", null, contentValuesAtor);
+            if(ator.getId() != -1) {
+                ContentValues contentValuesAtor = new ContentValues();
+                contentValuesAtor.put("id_filme", getLastFilme().getId());
+                contentValuesAtor.put("id_ator", ator.getId());
+                connection.insertOrThrow("filme_atores", null, contentValuesAtor);
+            }
         }
     }
 
@@ -186,7 +187,7 @@ public class FilmeDAO {
     }
 
     public Filme getLastFilme(){
-        String sql = "SELECT * FROM filme WHERE _id = max(id)";
+        String sql = "SELECT * FROM filme WHERE _id = (SELECT max(_id) FROM filme)";
 
         Cursor cursor = connection.rawQuery(sql,null);
 

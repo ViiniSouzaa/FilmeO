@@ -1,5 +1,6 @@
 package com.example.filmeo.activity;
 
+import android.annotation.SuppressLint;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,17 +16,21 @@ import com.example.filmeo.database.AtorDAO;
 import com.example.filmeo.database.DBHelper;
 import com.example.filmeo.model.Ator;
 
+@SuppressLint("ValidFragment")
 public class AdicionarAtorActivity extends Fragment{
 
     AtorDAO atorDAO;
     DBHelper db;
     EditText nomeAtor;
     SQLiteDatabase connection;
-
     Button novoAtor;
+    Bundle bundle;
+    int[] atores_id;
 
-    public AdicionarAtorActivity() {
 
+    @SuppressLint("ValidFragment")
+    public AdicionarAtorActivity(Bundle bundle) {
+        this.bundle = bundle;
     }
 
     @Override
@@ -45,11 +50,39 @@ public class AdicionarAtorActivity extends Fragment{
                 Ator ator = new Ator();
                 ator.setNome(String.valueOf(nomeAtor.getText()));
                 atorDAO.insert(ator);
+                addAtorBundle(atorDAO.getLastAtor().getId());
                 getActivity().finish();
             }
         });
         return view;
     }
 
+    public void addAtorBundle(int id){
+        iniciaAtores();
+        trocaVetor(bundle.getIntArray("atores"));
+        for(int i = 0; i < 3; i++){
+            if(atores_id[i] == -1){
+                atores_id[i] = id;
+                break;
+            }
+        }
+    }
+
+    public void trocaVetor(int[] atores_recuperados){
+        if(atores_recuperados != null) {
+            for (int i = 0; i < 3; i++) {
+                if (atores_recuperados[i] != -1) {
+                    atores_id[i] = atores_recuperados[i];
+                }
+            }
+        }
+    }
+
+    public void iniciaAtores(){
+        atores_id = new int[3];
+        for (int i = 0; i < 3; i++){
+            atores_id[i] = -1;
+        }
+    }
 
 }

@@ -6,6 +6,7 @@
       <w>assistido</w>
       <w>ator</w>
       <w>atores</w>
+      <w>conection</w>
       <w>descricao</w>
       <w>diretor</w>
       <w>diretores</w>
@@ -14,6 +15,8 @@
       <w>inserir</w>
       <w>lista</w>
       <w>novo</w>
+      <w>popula</w>
+      <w>recuperados</w>
     </words>
   </dictionary>
 </component>

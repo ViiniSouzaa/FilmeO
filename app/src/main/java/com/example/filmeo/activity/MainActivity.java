@@ -21,12 +21,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void listaFilmesAssistidos(View view){
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.FrameLayoutFilmes, new FilmesAssistidosActivity()).commit();
+                .replace(R.id.FrameLayoutFilmes, new ListaFilmesAssistidosActivity()).commit();
     }
 
     public void listaFilmesNaoAssistidos(View view){
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.FrameLayoutFilmes, new FilmesNaoAssistidosActivity()).commit();
+                .replace(R.id.FrameLayoutFilmes, new ListaFilmesNaoAssistidosActivity()).commit();
     }
 
     public void adicionarFilme(View view) {
