@@ -18,11 +18,6 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
-            db.execSQL(ScriptDLL.getCreateTableAtor());
-        }catch (SQLException ex){
-            System.out.println("Erro aqui ator");
-        }
-        try {
             db.execSQL(ScriptDLL.getCreateTableDiretor());
         }catch (SQLException ex){
             System.out.println("Erro aqui diretor");
@@ -32,12 +27,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }catch (SQLException ex){
             System.out.println("Erro aqui filme");
         }
-        try {
-            db.execSQL(ScriptDLL.getCreateConectionTablesFilmeAtor());
-        }catch (SQLException ex){
-            System.out.println("Erro aqui filme_ator");
-        }
-        db.execSQL(ScriptDLL.getCreateConectionTablesFilmeAtor());
     }
 
     @Override

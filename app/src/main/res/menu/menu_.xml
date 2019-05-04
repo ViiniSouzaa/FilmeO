@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tema"
+        android:checkable="false"
+        android:title="@string/tema">
+        <menu>
+            <item
+                android:id="@+id/claro"
+                android:title="@string/claro" />
+            <item
+                android:id="@+id/escuro"
+                android:title="@string/escuro" />
+        </menu>
+    </item>
+</menu>

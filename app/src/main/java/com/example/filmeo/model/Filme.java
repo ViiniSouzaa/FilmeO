@@ -1,24 +1,15 @@
 package com.example.filmeo.model;
 
-import java.util.List;
-
 public class Filme {
 
     private int id;
     private String nome;
     private String descricao;
-    private List<Ator> atores;
     private Diretor diretor;
     private boolean assistido;
 
     public Filme() {
 
-    }
-
-    public boolean adcionaAtores(List<Ator> atores){
-        if(atores.size() <= 3)
-            return true;
-         return false;
     }
 
     public int getId() {
@@ -43,14 +34,6 @@ public class Filme {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public List<Ator> getAtores() {
-        return atores;
-    }
-
-    public void setAtores(List<Ator> atores) {
-        this.atores = atores;
     }
 
     public Diretor getDiretor() {

@@ -16,11 +16,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.AdicionarFilmeActivity"
-            android:label="@string/label_adicionar_filme" />
-        <activity android:name=".activity.ListaAtoresActivity" />
-        <activity android:name=".activity.ListaDiretoresActivity" />
+        <activity android:name=".activity.AdicionarFilmeActivity"
+                  android:label="@string/label_adicionar_filme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.filmeo.activity.MainActivity" />
+        </activity>
+        <activity android:name=".activity.GerenciaGenerosActivity" />
+        <activity android:name=".activity.ListaDiretoresActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.filmeo.activity.AdicionarFilmeActivity" />
+        </activity>
+        <activity android:name=".activity.AdicionarDiretorActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.filmeo.activity.ListaDiretoresActivity" />
+        </activity>
+        <activity android:name=".activity.EditaDiretorActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.filmeo.activity.ListaDiretoresActivity" />
+        </activity>
+        <activity android:name=".activity.SobreActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.filmeo.activity.MainActivity" />
+        </activity>
 
     </application>
 

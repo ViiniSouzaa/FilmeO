@@ -8,17 +8,6 @@ public class ScriptDLL {
     Context context;
 
 
-
-    public static String getCreateTableAtor(){
-        StringBuilder sql = new StringBuilder();
-            sql.append("CREATE TABLE IF NOT EXISTS ator(" +
-                    "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "nome VARCHAR(100) NOT NULL );"
-            );
-        return sql.toString();
-
-    }
-
     public static String getCreateTableDiretor(){
         StringBuilder sql = new StringBuilder();
             sql.append("CREATE TABLE IF NOT EXISTS diretor(" +
@@ -41,17 +30,5 @@ public class ScriptDLL {
         return sql.toString();
     }
 
-
-    public static String getCreateConectionTablesFilmeAtor(){
-        StringBuilder sql = new StringBuilder();
-            sql.append("CREATE TABLE IF NOT EXISTS  filme_atores(" +
-                    "id_filme INTEGER," +
-                    "id_ator INTEGER," +
-                    "PRIMARY KEY(id_filme, id_ator)," +
-                    "FOREIGN KEY (id_filme) REFERENCES filme(_id)," +
-                    "FOREIGN KEY (id_ator) REFERENCES ator(_id)" +
-                    ");");
-        return sql.toString();
-    }
 
 }

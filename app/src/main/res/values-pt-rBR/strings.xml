@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="adicionar_Filme">Adicionar Filme</string>
+    <string name="label_adicionar_filme">FilmeO - Adicionar Filme</string>
+    <string name="insira_nome_do_filme">INSIRA O NOME DO FILME</string>
+    <string name="insiraDescricao">DIGITE UMA DESCRICAO PARA O FILME</string>
+    <string name="adicionarDiretor">INSERIR O DIRETOR</string>
+    <string name="diretor">DIRETOR</string>
+    <string name="adicionarNovoDiretor">ADICIONAR NOVO DIRETOR</string>
+    <string name="insira_nome_diretor">INSIRA O NOME DO DIRETOR</string>
+    <string name="nome">NOME</string>
+    <string name="adicionar">ADICIONAR</string>
+    <string name="ok">OK</string>
+    <string name="assistido">ASSISTIDO</string>
+    <string name="filme_assistido">ASSISTIDO</string>
+    <string name="filme_nao_assistido">NÃO ASSISTIDO</string>
+    <string name="title_activity_filmes_assistidos">Filmes Assistidos</string>
+    <string name="title_activity_filmes_nao_assistidos">Filmes Nao Assistidos</string>
+    <string name="az">ALFABETICA A - Z</string>
+    <string name="za">ALFABETICA Z - A</string>
+    <string name="erro_insere_ator">INSIRA CORRETAMENTE OS DADOS</string>
+    <string name="adicione_genero">ADICIONAR GENERO</string>
+    <string name="editar">EDITAR</string>
+    <string name="deletar">DELETAR</string>
+    <string name="tema">TEMA</string>
+    <string name="claro">CLARO</string>
+    <string name="escuro">ESCURO</string>
+    <string name="cancelar">CANCELAR</string>
+    <string name="deseja_excluir">DESEJA MESMO EXCLUIR ESSE DIRETOR?</string>
+    <string name="sim">SIM</string>
+    <string name="nao">NAO</string>
+    <string name="autor">Autor : VINICIUS DA SILVA SOUZA</string>
+    <string name="descricao">O objetivo desse programa é organizar os filmes assistidos e não assistidos, os filmes são organizados por generos, dentro de cada filme é possivel cadastrar o nome, os generos e os diretores</string>
+    <string name="sobre">SOBRE</string>
+</resources>

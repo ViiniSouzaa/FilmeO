@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.filmeo.model.Ator;
 import com.example.filmeo.model.Diretor;
 import com.example.filmeo.model.Filme;
 
@@ -27,14 +26,6 @@ public class FilmeDAO {
         contentValues.put("assistido", filme.isAssistido());
 
         connection.insertOrThrow("filme", null, contentValues);
-        for (Ator ator : filme.getAtores()){
-            if(ator.getId() != -1) {
-                ContentValues contentValuesAtor = new ContentValues();
-                contentValuesAtor.put("id_filme", getLastFilme().getId());
-                contentValuesAtor.put("id_ator", ator.getId());
-                connection.insertOrThrow("filme_atores", null, contentValuesAtor);
-            }
-        }
     }
 
     public void update (Filme filme){
@@ -48,16 +39,6 @@ public class FilmeDAO {
         args[0] = String.valueOf(filme.getId());
 
         connection.update("filme",contentValues,"_id = ?", args);
-
-        for (Ator ator : filme.getAtores()){
-            ContentValues contentValuesAtor = new ContentValues();
-            contentValuesAtor.put("id_ator", ator.getId());
-
-            String[] argsAtor =  new String[1];
-            argsAtor[0] = String.valueOf(filme.getId());
-
-            connection.update("filme_atores",contentValues,"id_filme = ?", argsAtor);
-        }
     }
 
     public void delete(int id){
@@ -85,7 +66,6 @@ public class FilmeDAO {
                 filme.setId(cursor.getInt(cursor.getColumnIndex("_id")));
                 filme.setNome(cursor.getString(cursor.getColumnIndex("nome")));
                 filme.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
-                filme.setAtores(atoresFilme(filme.getId()));
                 filme.setDiretor(getDiretor(cursor.getInt(cursor.getColumnIndex("id_diretor"))));
                 filme.setAssistido(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex("assistido"))));
                 list.add(filme);
@@ -114,7 +94,6 @@ public class FilmeDAO {
                 filme.setId(cursor.getInt(cursor.getColumnIndex("_id")));
                 filme.setNome(cursor.getString(cursor.getColumnIndex("nome")));
                 filme.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
-                filme.setAtores(atoresFilme(filme.getId()));
                 filme.setDiretor(getDiretor(cursor.getInt(cursor.getColumnIndex("id_diretor"))));
                 filme.setAssistido(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex("assistido"))));
                 list.add(filme);
@@ -144,7 +123,6 @@ public class FilmeDAO {
                 filme.setId(cursor.getInt(cursor.getColumnIndex("_id")));
                 filme.setNome(cursor.getString(cursor.getColumnIndex("nome")));
                 filme.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
-                filme.setAtores(atoresFilme(filme.getId()));
                 filme.setDiretor(getDiretor(cursor.getInt(cursor.getColumnIndex("id_diretor"))));
                 filme.setAssistido(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex("assistido"))));
                 list.add(filme);
@@ -174,7 +152,6 @@ public class FilmeDAO {
                 filme.setId(cursor.getInt(cursor.getColumnIndex("_id")));
                 filme.setNome(cursor.getString(cursor.getColumnIndex("nome")));
                 filme.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
-                filme.setAtores(atoresFilme(filme.getId()));
                 filme.setDiretor(getDiretor(cursor.getInt(cursor.getColumnIndex("id_diretor"))));
                 filme.setAssistido(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex("assistido"))));
                 list.add(filme);
@@ -200,26 +177,6 @@ public class FilmeDAO {
             filme.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
             cursor.close();
             return filme;
-        }
-        cursor.close();
-        return null;
-    }
-
-    public List<Ator> atoresFilme(int idFilme){
-        List<Ator> lista =  new ArrayList<>();
-        String sql = " SELECT * FROM filme_ator join ator on(_id = id_ator)  WHERE id_filme = " + idFilme;
-
-        Cursor cursor = connection.rawQuery(sql,null);
-
-        if(cursor.moveToFirst()){
-            do {
-                Ator ator =  new Ator();
-                ator.setId(cursor.getInt(cursor.getColumnIndex("_id")));
-                ator.setNome(cursor.getString(cursor.getColumnIndex("nome")));
-                lista.add(ator);
-            }while (cursor.moveToNext());
-            cursor.close();
-            return lista;
         }
         cursor.close();
         return null;

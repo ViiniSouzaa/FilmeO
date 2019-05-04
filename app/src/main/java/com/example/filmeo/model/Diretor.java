@@ -1,6 +1,9 @@
 package com.example.filmeo.model;
 
-public class Diretor {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Diretor implements Parcelable {
 
     private int id;
     private String nome;
@@ -13,6 +16,23 @@ public class Diretor {
         this.id = id;
         this.nome = nome;
     }
+
+    protected Diretor(Parcel in) {
+        id = in.readInt();
+        nome = in.readString();
+    }
+
+    public static final Creator<Diretor> CREATOR = new Creator<Diretor>() {
+        @Override
+        public Diretor createFromParcel(Parcel in) {
+            return new Diretor(in);
+        }
+
+        @Override
+        public Diretor[] newArray(int size) {
+            return new Diretor[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -28,5 +48,21 @@ public class Diretor {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(nome);
+    }
+
+    @Override
+    public String toString() {
+        return this.getNome();
     }
 }

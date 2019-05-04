@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.filmeo.model.Ator;
 import com.example.filmeo.model.Diretor;
 
 import java.util.ArrayList;
