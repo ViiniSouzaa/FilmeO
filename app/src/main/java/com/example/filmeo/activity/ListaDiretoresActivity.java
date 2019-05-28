@@ -12,15 +12,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.filmeo.R;
+import com.example.filmeo.database.DiretorDatabase;
 import com.example.filmeo.model.Diretor;
 
 import java.util.ArrayList;
 
 public class ListaDiretoresActivity extends AppCompatActivity {
 
-    ArrayList<Diretor> diretores;
     ListView listViewDiretores;
     Intent intent;
+    int diretor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,34 +30,41 @@ public class ListaDiretoresActivity extends AppCompatActivity {
 
         intent = getIntent();
         listViewDiretores = findViewById(R.id.listViewDiretores);
-        diretores = recuperaDiretores();
         populaLista();
+        recuperaDiretor();
         clickListView();
     }
 
-    private ArrayList<Diretor> recuperaDiretores() {
-        ArrayList<Diretor> tempDiretores = intent.getParcelableArrayListExtra("diretores");
-        if (tempDiretores != null){
-            return tempDiretores;
-        }
-        return new ArrayList<>();
+    private void recuperaDiretor() {
+        diretor = intent.getIntExtra("diretor", -1);
     }
 
     public void adicionaNovoDiretor(View view){
         Intent intent = new Intent(getBaseContext(), AdicionarDiretorActivity.class);
-        intent.putParcelableArrayListExtra("diretores", diretores);
         startActivity(intent);
     }
 
     private void populaLista() {
-        ArrayAdapter<Diretor> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, diretores);
+        ArrayAdapter<Diretor> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
+                DiretorDatabase.getDatabase(getApplicationContext()).diretorDAO().listaTodos());
         listViewDiretores.setAdapter(adapter);
     }
 
-    public void clickListView(){
+    public void clickListView() {
         listViewDiretores.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Diretor diretor = (Diretor) parent.getAdapter().getItem(position);
+
+                Intent intent = new Intent(getBaseContext(), AdicionarFilmeActivity.class);
+                intent.putExtra("diretor", diretor.getId());
+                startActivity(intent);
+            }
+        });
+
+        listViewDiretores.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View arg1, int position, long id) {
                 final Diretor diretor = (Diretor) parent.getAdapter().getItem(position);
 
                 final CharSequence[] acoes = {getString(R.string.editar), getString(R.string.deletar), getString(R.string.cancelar)};
@@ -69,8 +77,7 @@ public class ListaDiretoresActivity extends AppCompatActivity {
 
                         if(acao.equals(getString(R.string.editar))){
                             Intent intent = new Intent(getBaseContext(), EditaDiretorActivity.class);
-                            intent.putParcelableArrayListExtra("diretores", diretores);
-                            intent.putExtra("diretor", position);
+                            intent.putExtra("diretor", diretor.getId());
                             startActivity(intent);
                         }
                         else if(acao.equals(getString(R.string.deletar))){
@@ -82,6 +89,7 @@ public class ListaDiretoresActivity extends AppCompatActivity {
                     }
                 });
                 listaAcoes.show();
+                return true;
             }
         });
     }
@@ -92,7 +100,7 @@ public class ListaDiretoresActivity extends AppCompatActivity {
         confirma.setPositiveButton(getString(R.string.sim), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                diretores.remove(diretor);
+                DiretorDatabase.getDatabase(getApplicationContext()).diretorDAO().deletar(diretor);
                 populaLista();
             }
         });

@@ -1,11 +1,26 @@
 package com.example.filmeo.model;
 
+
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
+@Entity(foreignKeys = @ForeignKey(entity = Diretor.class,
+                                  parentColumns = "id",
+                                  childColumns = "id_diretor"))
 public class Filme {
 
+    @PrimaryKey
     private int id;
+    @NonNull
     private String nome;
     private String descricao;
-    private Diretor diretor;
+
+    @ColumnInfo(index = true)
+    private int id_diretor;
+    @NonNull
     private boolean assistido;
 
     public Filme() {
@@ -36,12 +51,12 @@ public class Filme {
         this.descricao = descricao;
     }
 
-    public Diretor getDiretor() {
-        return diretor;
+    public int getId_diretor() {
+        return id_diretor;
     }
 
-    public void setDiretor(Diretor diretor) {
-        this.diretor = diretor;
+    public void setId_diretor(int id_diretor) {
+        this.id_diretor = id_diretor;
     }
 
     public boolean isAssistido() {

@@ -1,0 +1,16 @@
+package com.example.filmeo.database;
+
+import android.arch.persistence.room.Delete;
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.Update;
+
+public interface DaoGenerico<T> {
+    @Insert
+    long inserir(T entidade);
+
+    @Delete
+    void deletar(T entidade);
+
+    @Update
+    void alterar(T entidade);
+}

@@ -8,15 +8,15 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.filmeo.R;
+import com.example.filmeo.database.DiretorDatabase;
 import com.example.filmeo.model.Diretor;
 
 import java.util.ArrayList;
 
 public class EditaDiretorActivity extends AppCompatActivity {
     Intent intent;
-    ArrayList<Diretor> diretores;
     EditText nomeDiretor;
-    int diretor;
+    long diretor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,25 +25,17 @@ public class EditaDiretorActivity extends AppCompatActivity {
 
         intent = getIntent();
 
-        diretores = recuperaDiretores();
         diretor = intent.getIntExtra("diretor", -1);
         nomeDiretor = findViewById(R.id.editTextNomeDiretor2);
-        nomeDiretor.setText(diretores.get(diretor).getNome());
+        nomeDiretor.setText(DiretorDatabase.getDatabase(getApplicationContext()).diretorDAO().listaPorId(diretor).toString());
     }
 
     public void EditaDiretor(View view){
-        diretores.get(diretor).setNome(nomeDiretor.getText().toString());
-
+        long in = diretor;
+        Diretor diretor = DiretorDatabase.getDatabase(getApplicationContext()).diretorDAO().listaPorId(in);
+        diretor.setNome(nomeDiretor.getText().toString());
+        DiretorDatabase.getDatabase(getApplicationContext()).diretorDAO().alterar(diretor);
         Intent intent = new Intent(getBaseContext(), ListaDiretoresActivity.class);
-        intent.putParcelableArrayListExtra("diretores", diretores);
         startActivity(intent);
-    }
-
-    private ArrayList<Diretor> recuperaDiretores() {
-        ArrayList<Diretor> tempDiretores = intent.getParcelableArrayListExtra("diretores");
-        if (tempDiretores != null){
-            return tempDiretores;
-        }
-        return new ArrayList<>();
     }
 }

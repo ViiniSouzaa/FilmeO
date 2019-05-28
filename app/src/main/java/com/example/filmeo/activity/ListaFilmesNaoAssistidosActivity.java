@@ -18,8 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.example.filmeo.R;
-import com.example.filmeo.database.DBHelper;
-import com.example.filmeo.database.FilmeDAO;
 import com.example.filmeo.model.Filme;
 import com.example.filmeo.recycleAdapter.FilmeAdapter;
 import com.example.filmeo.utils.RecyclerItemClickListener;

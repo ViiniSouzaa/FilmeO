@@ -1,23 +1,14 @@
 package com.example.filmeo.activity;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.filmeo.R;
-import com.example.filmeo.database.DBHelper;
-import com.example.filmeo.database.DiretorDAO;
 import com.example.filmeo.model.Diretor;
 
 import java.util.ArrayList;
@@ -36,25 +27,15 @@ public class AdicionarDiretorActivity extends AppCompatActivity {
 
         intent = getIntent();
 
-        diretores = recuperaDiretores();
         nomeDiretor = findViewById(R.id.editTextNomeDiretor);
     }
 
     public void adicionaNovoDiretor(View view){
-        Diretor diretor = new Diretor();
-        diretor.setNome(nomeDiretor.getText().toString());
-        diretores.add(diretor);
-
+        Diretor diretor = new Diretor(nomeDiretor.getText().toString());
         Intent intent = new Intent(getBaseContext(), ListaDiretoresActivity.class);
-        intent.putParcelableArrayListExtra("diretores", diretores);
+        intent.putExtra("diretor", diretor.getId());
         startActivity(intent);
     }
 
-    private ArrayList<Diretor> recuperaDiretores() {
-        ArrayList<Diretor> tempDiretores = intent.getParcelableArrayListExtra("diretores");
-        if (tempDiretores != null){
-            return tempDiretores;
-        }
-        return new ArrayList<>();
-    }
+
 }

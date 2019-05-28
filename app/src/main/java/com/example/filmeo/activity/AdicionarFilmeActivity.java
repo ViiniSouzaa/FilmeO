@@ -16,9 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.filmeo.R;
-import com.example.filmeo.database.DBHelper;
-import com.example.filmeo.database.DiretorDAO;
-import com.example.filmeo.database.FilmeDAO;
+import com.example.filmeo.database.DiretorDatabase;
+import com.example.filmeo.database.FilmeDatabase;
 import com.example.filmeo.model.Diretor;
 import com.example.filmeo.model.Filme;
 
@@ -30,12 +29,7 @@ public class AdicionarFilmeActivity extends AppCompatActivity {
     Button inserirDiretor, adicionarFilme;
     CheckBox assistido;
     TextView textViewDiretor;
-    FilmeDAO filmeDAO;
-    SQLiteDatabase connection;
-    DBHelper db;
-    Diretor diretor;
-    DiretorDAO diretorDAO;
-    ListView listViewGeneros;
+    int diretor;
     Intent intent;
 
     @Override
@@ -50,11 +44,10 @@ public class AdicionarFilmeActivity extends AppCompatActivity {
         adicionarFilme = findViewById(R.id.buttonAdicionaNovoFilme);
         textViewDiretor = findViewById(R.id.textViewDiretor);
         assistido = findViewById(R.id.checkBoxAssistido);
-        listViewGeneros = findViewById(R.id.listViewGeneros);
         intent = getIntent();
         recuperaDados();
         populaDiretor();
-        popularLista();
+        //popularLista();
     }
 
     @Override
@@ -64,36 +57,29 @@ public class AdicionarFilmeActivity extends AppCompatActivity {
     }
 
     private void recuperaDados(){
-        db = new DBHelper(this);
-        connection = db.getReadableDatabase();
-        diretorDAO = new DiretorDAO(connection);
-        nomeFilme.setText(intent.getStringExtra("nome"));
-        descricaoFilme.setText(intent.getStringExtra("descricao"));
-        diretor = diretorDAO.getById(intent.getIntExtra("diretor", -1));
-        assistido.setSelected(intent.getBooleanExtra("assistido", false));
+        diretor = intent.getIntExtra("diretor", -1);
     }
 
-    public void adicionaGenero(View view){
-        Intent intent = new Intent(getBaseContext(), GerenciaGenerosActivity.class);
-            /*intent.putExtra("nome", String.valueOf(nomeFilme.getText()));
-            intent.putExtra("descricao", String.valueOf(descricaoFilme.getText()));
-            intent.putExtra("diretor", diretor.getId());
-            intent.putExtra("assistido", assistido.isSelected());*/
+    /*
+        public void adicionaGenero(View view){
+            Intent intent = new Intent(getBaseContext(), GerenciaGenerosActivity.class);
+                intent.putExtra("nome", String.valueOf(nomeFilme.getText()));
+                intent.putExtra("descricao", String.valueOf(descricaoFilme.getText()));
+                intent.putExtra("diretor", diretor.getId());
+                intent.putExtra("assistido", assistido.isSelected());
         startActivity(intent);
-    }
+    }*/
 
     public void listaDiretores(View view){
         Intent intent = new Intent(getBaseContext(), ListaDiretoresActivity.class);
-            /*intent.putExtra("nome", String.valueOf(nomeFilme.getText()));
-            intent.putExtra("descricao", String.valueOf(descricaoFilme.getText()));
-            intent.putExtra("diretor", diretor.getId());
-            intent.putExtra("assistido", assistido.isSelected());*/
             startActivity(intent);
     }
 
     public void populaDiretor(){
-            if(diretor != null)
-                textViewDiretor.setText(diretor.getNome());
+        if(diretor != -1){
+            textViewDiretor.setText(
+            DiretorDatabase.getDatabase(getApplicationContext()).diretorDAO().listaPorId(diretor).toString());
+        }
     }
 
     public boolean validaCampos(){
@@ -102,29 +88,18 @@ public class AdicionarFilmeActivity extends AppCompatActivity {
 
     public void adicionarNovoFilme(View view){
         if(validaCampos()) {
-            db = new DBHelper(this);
-            connection = db.getWritableDatabase();
-            filmeDAO = new FilmeDAO(connection);
             Filme filme = new Filme();
-            filme.setNome(String.valueOf(nomeFilme.getText()));
-            filme.setDescricao(String.valueOf(descricaoFilme.getText()));
-            filme.setDiretor(diretor);
+            filme.setNome(nomeFilme.getText().toString());
+            filme.setDescricao(descricaoFilme.getText().toString());
             filme.setAssistido(assistido.isSelected());
-            filmeDAO.insert(filme);
-            finish();
+            filme.setId_diretor(diretor);
+
+            FilmeDatabase.getDatabase(getApplicationContext()).filmeDAO().inserir(filme);
+
+            Intent intent = new Intent(getBaseContext(), MainActivity.class);
+            startActivity(intent);
         }else{
             Snackbar.make(new View(this), R.string.erro_insere_ator, Snackbar.LENGTH_LONG);
         }
-    }
-
-   private void popularLista(){
-        ArrayList<String> nomes = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++)
-            nomes.add("teste" + (i+1));
-
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, nomes);
-
-        listViewGeneros.setAdapter(adapter);
     }
 }
