@@ -3,6 +3,9 @@ package com.example.filmeo.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.TabItem;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
@@ -15,18 +18,33 @@ import com.example.filmeo.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    FrameLayout frameLayoutFilmes;
     private static final String ARQUIVO = "com.example.filmeo.PREFERECIA_DARK";
     private static final String OPCAO = "TEMA";
 
     private boolean dark;
 
+    TabLayout tabLayout;
+    private ViewPager viewPager;
+    private AdapterListaFragment adapterListaFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        frameLayoutFilmes = findViewById(R.id.FrameLayoutFilmes);
         lerPreferenciaTema();
+        adapterListaFragment = new AdapterListaFragment(getSupportFragmentManager());
+        viewPager = (ViewPager) findViewById(R.id.viewPagerFilmes);
+        configuraAdapter(viewPager);
+        tabLayout = findViewById(R.id.tabLayoutFilmes);
+        tabLayout.setupWithViewPager(viewPager);
+
+    }
+
+    public void configuraAdapter(ViewPager viewPager){
+        AdapterListaFragment adapter = new AdapterListaFragment(getSupportFragmentManager());
+        adapter.addFragment(new ListaFilmesAssistidosActivity(), getString(R.string.filme_assistido));
+        adapter.addFragment(new ListaFilmesNaoAssistidosActivity(), getString(R.string.filme_nao_assistido));
+        viewPager.setAdapter(adapter);
     }
 
     @Override
@@ -46,16 +64,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return false;
-    }
-
-    public void listaFilmesAssistidos(View view){
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.FrameLayoutFilmes, new ListaFilmesAssistidosActivity()).commit();
-    }
-
-    public void listaFilmesNaoAssistidos(View view){
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.FrameLayoutFilmes, new ListaFilmesNaoAssistidosActivity()).commit();
     }
 
     public void adicionarFilme(View view) {

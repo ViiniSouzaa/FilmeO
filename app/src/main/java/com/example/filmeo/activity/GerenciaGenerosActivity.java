@@ -16,9 +16,7 @@ public class GerenciaGenerosActivity extends AppCompatActivity {
     private ViewPager viewPager;
 
     TabLayout tabLayout;
-    TabItem tabItemLista;
-    TabItem tabItemAdicionar;
-    FrameLayout frameLayout;
+
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {

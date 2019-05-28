@@ -18,18 +18,17 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.example.filmeo.R;
+import com.example.filmeo.database.FilmeDatabase;
 import com.example.filmeo.model.Filme;
 import com.example.filmeo.recycleAdapter.FilmeAdapter;
 import com.example.filmeo.utils.RecyclerItemClickListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ListaFilmesAssistidosActivity extends Fragment {
 
-    DBHelper db;
-    SQLiteDatabase connection;
-    FilmeDAO filmeDAO;
     EditText editTextNomeFilme;
     ImageButton buttonPesquisa;
     Spinner spinnerOrderBy;
@@ -38,17 +37,13 @@ public class ListaFilmesAssistidosActivity extends Fragment {
     Boolean order;
     List<Filme> filmes;
     FilmeAdapter filmeAdapter;
+    View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_filmes, container, false);
+        view = inflater.inflate(R.layout.activity_filmes, container, false);
 
-        db = new DBHelper(view.getContext());
-        connection = db.getReadableDatabase();
-        filmeDAO = new FilmeDAO(connection);
-        editTextNomeFilme = view.findViewById(R.id.editTextSearchFilme);
-        buttonPesquisa = view.findViewById(R.id.imageButtonSearchFIlme);
         spinnerOrderBy = view.findViewById(R.id.spinnerOrderBy);
         recyclerViewFilmes = view.findViewById(R.id.recycleViewFilmes);
         layoutManager = new LinearLayoutManager(view.getContext());
@@ -60,11 +55,13 @@ public class ListaFilmesAssistidosActivity extends Fragment {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         String ordem = parent.getItemAtPosition(position).toString();
-                        if(order.equals(R.string.az)){
+                        if(ordem.equals(getString(R.string.az))){
                             order = true;
+                            verificaOrdemLista();
                         }else
-                        if(order.equals(R.string.za)){
+                        if(ordem.equals(getString(R.string.az))){
                             order = false;
+                            verificaOrdemLista();
                         }
                     }
 
@@ -79,11 +76,16 @@ public class ListaFilmesAssistidosActivity extends Fragment {
         recyclerViewFilmes.setHasFixedSize(true);
         recyclerViewFilmes.addItemDecoration(new DividerItemDecoration(view.getContext(), LinearLayout.VERTICAL));
 
-        filmes = filmeDAO.getAllAssistidos(order);
-        if(filmes == null){
-            System.out.println("LISTA NULA");
+        filmes = FilmeDatabase.getDatabase(getContext()).filmeDAO().listaAssistidos();
+
+        if(filmes == null) {
             filmes = new ArrayList<>();
         }
+        verificaOrdemLista();
+        return view;
+    }
+
+    private void listar() {
         filmeAdapter = new FilmeAdapter(filmes);
 
         recyclerViewFilmes.setAdapter(filmeAdapter);
@@ -100,16 +102,15 @@ public class ListaFilmesAssistidosActivity extends Fragment {
                     }
                 })
         );
+    }
 
-        buttonPesquisa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                filmes = filmeDAO.getByNomeAssistido(String.valueOf(editTextNomeFilme.getText()), order);
-                filmeAdapter = new FilmeAdapter(filmes);
-                recyclerViewFilmes.setAdapter(filmeAdapter);
-            }
-        });
-
-        return view;
+    private void verificaOrdemLista() {
+        if(!order){
+            Collections.reverse(filmes);
+            listar();
+        }else if(order){
+            filmes = FilmeDatabase.getDatabase(getContext()).filmeDAO().listaAssistidos();
+            listar();
+        }
     }
 }
