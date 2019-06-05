@@ -12,16 +12,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.filmeo.R;
-import com.example.filmeo.database.DiretorDatabase;
+import com.example.filmeo.database.FilmesDatabase;
 import com.example.filmeo.model.Diretor;
-
-import java.util.ArrayList;
 
 public class ListaDiretoresActivity extends AppCompatActivity {
 
     ListView listViewDiretores;
     Intent intent;
     int diretor;
+    String nomeFilme, descricaoFilme;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,6 +28,8 @@ public class ListaDiretoresActivity extends AppCompatActivity {
         setContentView(R.layout.activity_diretores);
 
         intent = getIntent();
+        nomeFilme = intent.getStringExtra("nomeFilme");
+        descricaoFilme = intent.getStringExtra("descricaoFilme");
         listViewDiretores = findViewById(R.id.listViewDiretores);
         populaLista();
         recuperaDiretor();
@@ -41,12 +42,14 @@ public class ListaDiretoresActivity extends AppCompatActivity {
 
     public void adicionaNovoDiretor(View view){
         Intent intent = new Intent(getBaseContext(), AdicionarDiretorActivity.class);
+        intent.putExtra("nomeFilme", nomeFilme);
+        intent.putExtra("descricaoFilme", descricaoFilme);
         startActivity(intent);
     }
 
     private void populaLista() {
         ArrayAdapter<Diretor> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
-                DiretorDatabase.getDatabase(getApplicationContext()).diretorDAO().listaTodos());
+                FilmesDatabase.getDatabase(getApplicationContext()).diretorDAO().listaTodos());
         listViewDiretores.setAdapter(adapter);
     }
 
@@ -58,7 +61,10 @@ public class ListaDiretoresActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getBaseContext(), AdicionarFilmeActivity.class);
                 intent.putExtra("diretor", diretor.getId());
+                intent.putExtra("nomeFilme", nomeFilme);
+                intent.putExtra("descricaoFilme", descricaoFilme);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -100,7 +106,7 @@ public class ListaDiretoresActivity extends AppCompatActivity {
         confirma.setPositiveButton(getString(R.string.sim), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DiretorDatabase.getDatabase(getApplicationContext()).diretorDAO().deletar(diretor);
+                FilmesDatabase.getDatabase(getApplicationContext()).diretorDAO().deletar(diretor);
                 populaLista();
             }
         });

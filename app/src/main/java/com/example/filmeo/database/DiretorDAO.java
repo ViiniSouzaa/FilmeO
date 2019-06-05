@@ -1,5 +1,6 @@
 package com.example.filmeo.database;
 
+import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Query;
 
 import com.example.filmeo.model.Diretor;
@@ -7,6 +8,7 @@ import com.example.filmeo.model.Filme;
 
 import java.util.List;
 
+@Dao
 public interface DiretorDAO extends DaoGenerico<Diretor> {
     @Query("SELECT * FROM diretor WHERE id = :id")
     Diretor listaPorId(long id);

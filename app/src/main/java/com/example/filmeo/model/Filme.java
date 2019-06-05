@@ -9,17 +9,19 @@ import android.support.annotation.NonNull;
 
 @Entity(foreignKeys = @ForeignKey(entity = Diretor.class,
                                   parentColumns = "id",
-                                  childColumns = "id_diretor"))
+                                  childColumns = "id_diretor", onDelete = ForeignKey.CASCADE))
 public class Filme {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
+
     @NonNull
     private String nome;
     private String descricao;
 
     @ColumnInfo(index = true)
     private int id_diretor;
+
     @NonNull
     private boolean assistido;
 
@@ -65,5 +67,10 @@ public class Filme {
 
     public void setAssistido(boolean assistido) {
         this.assistido = assistido;
+    }
+
+    @Override
+    public String toString() {
+        return getNome();
     }
 }

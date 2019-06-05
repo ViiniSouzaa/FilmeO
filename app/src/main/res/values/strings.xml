@@ -33,4 +33,7 @@
     <string name="descricao">The purpose of this program is to organize the films watched and not watched, the films are organized by genres, within each film it is possible to register the name, genres and directors</string>
     <string name="sobre">ABOUT</string>
     <string name="cancelar">CANCEL</string>
+
+    <string name="editarFilme">EDIT MOVIE</string>
+    <string name="erro_insere_diretor">Insira um Diretor ao filme</string>
 </resources>

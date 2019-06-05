@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 @Entity
 public class Diretor {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
     @NonNull
     private String nome;

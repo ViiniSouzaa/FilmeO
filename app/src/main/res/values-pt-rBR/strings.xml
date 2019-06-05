@@ -18,7 +18,7 @@
     <string name="title_activity_filmes_nao_assistidos">Filmes Nao Assistidos</string>
     <string name="az">ALFABETICA A - Z</string>
     <string name="za">ALFABETICA Z - A</string>
-    <string name="erro_insere_ator">INSIRA CORRETAMENTE OS DADOS</string>
+    <string name="erro_insere_ator">INSIRA O NOME DO FILME</string>
     <string name="adicione_genero">ADICIONAR GENERO</string>
     <string name="editar">EDITAR</string>
     <string name="deletar">DELETAR</string>
@@ -32,4 +32,5 @@
     <string name="autor">Autor : VINICIUS DA SILVA SOUZA</string>
     <string name="descricao">O objetivo desse programa é organizar os filmes assistidos e não assistidos, os filmes são organizados por generos, dentro de cada filme é possivel cadastrar o nome, os generos e os diretores</string>
     <string name="sobre">SOBRE</string>
+    <string name="editarFilme">EDITAR FILME</string>
 </resources>

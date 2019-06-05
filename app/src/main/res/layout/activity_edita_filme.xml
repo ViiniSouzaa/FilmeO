@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/editarFilme"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CheckBox
+        android:id="@+id/checkBoxAssistido2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:text="@string/assistido"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewDiretor2"
+        app:layout_constraintStart_toStartOf="@+id/textViewDiretor2"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDiretor2" />
+
+    <TextView
+        android:id="@+id/textViewDiretor2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:hint="@string/diretor"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextDescricao2"
+        app:layout_constraintStart_toStartOf="@+id/editTextDescricao2"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescricao2" />
+
+    <EditText
+        android:id="@+id/edittext_nome_filme2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/insira_nome_do_filme"
+        android:inputType="textPersonName"
+        android:textColorHighlight="@android:color/black"
+        android:textColorHint="@android:color/tab_indicator_text"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextDescricao2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/insiraDescricao"
+        android:inputType="textMultiLine"
+        android:textColorHint="@android:color/tab_indicator_text"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/edittext_nome_filme2"
+        app:layout_constraintStart_toStartOf="@+id/edittext_nome_filme2"
+        app:layout_constraintTop_toBottomOf="@+id/edittext_nome_filme2" />
+
+    <Button
+        android:id="@+id/buttonEditaNovoFilme"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:onClick="editaFilme"
+        android:text="@string/editarFilme"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/checkBoxAssistido2"
+        app:layout_constraintStart_toStartOf="@+id/checkBoxAssistido2"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxAssistido2" />
+
+</android.support.constraint.ConstraintLayout>

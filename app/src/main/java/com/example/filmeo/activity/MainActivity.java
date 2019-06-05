@@ -3,7 +3,6 @@ package com.example.filmeo.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +11,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.SearchView;
 
 import com.example.filmeo.R;
 
@@ -30,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dark = true;
         setContentView(R.layout.activity_main);
         lerPreferenciaTema();
         adapterListaFragment = new AdapterListaFragment(getSupportFragmentManager());
@@ -58,13 +58,14 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.claro) {
             salvaPreferencia(false);
-            return true;
+            return super.onOptionsItemSelected(item);
         }else if(id == R.id.escuro){
             salvaPreferencia(true);
-            return true;
+            return super.onOptionsItemSelected(item);
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
+
 
     public void adicionarFilme(View view) {
         startActivity(new Intent(getBaseContext(), AdicionarFilmeActivity.class));
